@@ -59,23 +59,19 @@ app.post('/inputDatabase', (req, res)=>{
     )
 })
 
-// app.post('/validation', (req, res)=>{
-//     const userData = connection.query(
-//         'SELECT (name, password) FROM user WHERE name = ? password = ?',
-//         [req.body.email, req.body.password]
-//     )
-
-
-// })
-
-function validData(){
+app.post('/validation', (req, res)=>{
     connection.query(
-        'SELECT (email, password) FROM user WHERE email = ? password = ?',
-        [req.body.email, req.body.password],
-        (err,res)=>{
-            
+        'SELECT * FROM user WHERE email = ?',
+        [req.body.email],
+        (error, results)=>{
+            if (results[0].email == req.body.email){
+                console.log(results[0].email);
+                res.redirect('/home')
+            }else{
+                throw error;
+            }
         }
     )
-}
+})
 
 app.listen(3000);
